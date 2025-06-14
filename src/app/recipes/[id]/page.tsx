@@ -15,13 +15,14 @@ async function getRecipe(id: string) {
   return res.json();
 }
 
-export default async function RecipePage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const recipe = await getRecipe(params.id);
+interface RecipePageProps {
+  params: {
+    id: string;
+  };
+}
 
+export default async function RecipePage({ params }: RecipePageProps) {
+  const recipe = await getRecipe(params.id);
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-rose-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto bg-white/90 backdrop-blur-md rounded-2xl shadow-xl overflow-hidden">
