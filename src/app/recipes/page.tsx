@@ -40,19 +40,22 @@ const fetchRecipes = cache(
 export default async function RecipesPage({
   searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     query?: string;
     cuisine?: string;
     maxReadyTime?: string;
-  };
+  }>;
 }) {
+  // Дочікуємося реального об'єкта searchParams
+  const resolvedSearchParams = await searchParams;
+
   let data;
 
   try {
     data = await fetchRecipes({
-      query: searchParams?.query || '',
-      cuisine: searchParams?.cuisine || '',
-      maxReadyTime: searchParams?.maxReadyTime || '',
+      query: resolvedSearchParams?.query || '',
+      cuisine: resolvedSearchParams?.cuisine || '',
+      maxReadyTime: resolvedSearchParams?.maxReadyTime || '',
     });
   } catch {
     return (
@@ -93,19 +96,19 @@ export default async function RecipesPage({
             Delicious Recipes
           </h1>
           <div className="flex flex-wrap gap-3">
-            {searchParams.query && (
+            {resolvedSearchParams.query && (
               <span className="bg-blue-200 text-blue-900 px-4 py-1 rounded-full text-sm font-medium shadow-sm select-none">
-                Search: {searchParams.query}
+                Search: {resolvedSearchParams.query}
               </span>
             )}
-            {searchParams.cuisine && (
+            {resolvedSearchParams.cuisine && (
               <span className="bg-green-200 text-green-900 px-4 py-1 rounded-full text-sm font-medium shadow-sm select-none">
-                Cuisine: {searchParams.cuisine}
+                Cuisine: {resolvedSearchParams.cuisine}
               </span>
             )}
-            {searchParams.maxReadyTime && (
+            {resolvedSearchParams.maxReadyTime && (
               <span className="bg-purple-200 text-purple-900 px-4 py-1 rounded-full text-sm font-medium shadow-sm select-none">
-                Max time: {searchParams.maxReadyTime} min
+                Max time: {resolvedSearchParams.maxReadyTime} min
               </span>
             )}
           </div>
