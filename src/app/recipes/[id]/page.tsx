@@ -1,9 +1,5 @@
 import Image from 'next/image';
 
-interface RecipePageProps {
-  params: { id: string };
-}
-
 async function getRecipe(id: string) {
   const params = new URLSearchParams({
     apiKey: process.env.SPOONACULAR_API_KEY!,
@@ -19,9 +15,7 @@ async function getRecipe(id: string) {
   return res.json();
 }
 
-export default async function RecipePage({
-  params,
-}: Awaited<RecipePageProps>) {
+export default async function Page({ params }: { params: { id: string } }) {
   const recipe = await getRecipe(params.id);
 
   return (
