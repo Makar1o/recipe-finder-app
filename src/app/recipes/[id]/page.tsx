@@ -15,13 +15,11 @@ async function getRecipe(id: string) {
   return res.json();
 }
 
-interface RecipePageProps {
-  params: {
-    id: string;
-  };
-}
-
-export default async function RecipePage({ params }: RecipePageProps) {
+export default async function RecipePage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const recipe = await getRecipe(params.id);
 
   return (
