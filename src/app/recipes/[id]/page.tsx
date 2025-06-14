@@ -1,9 +1,7 @@
 import Image from 'next/image';
 
-interface PageProps {
-  params: {
-    id: string;
-  };
+interface RecipePageProps {
+  params: { id: string };
 }
 
 async function getRecipe(id: string) {
@@ -13,18 +11,17 @@ async function getRecipe(id: string) {
   });
 
   const res = await fetch(
-    `https://api.spoonacular.com/recipes/${id}/information?${params.toString()}`,
-    { cache: 'no-store' },
+    `https://api.spoonacular.com/recipes/${id}/information?${params}`,
   );
 
-  if (!res.ok) {
-    throw new Error('Failed to fetch recipe');
-  }
+  if (!res.ok) throw new Error('Failed to fetch recipe');
 
   return res.json();
 }
 
-export default async function RecipePage({ params }: PageProps) {
+export default async function RecipePage({
+  params,
+}: Awaited<RecipePageProps>) {
   const recipe = await getRecipe(params.id);
 
   return (
