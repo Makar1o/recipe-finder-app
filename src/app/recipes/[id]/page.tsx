@@ -15,11 +15,13 @@ async function getRecipe(id: string) {
   return res.json();
 }
 
-export default async function RecipePage({
-  params,
-}: {
-  params: { id: string };
-}) {
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default async function RecipePage({ params }: PageProps) {
   const recipe = await getRecipe(params.id);
 
   return (
@@ -41,9 +43,10 @@ export default async function RecipePage({
             />
           </div>
 
-          <div className="prose prose-lg max-w-none text-gray-800 leading-relaxed prose-headings:text-gray-900 prose-p:mt-0">
-            <div dangerouslySetInnerHTML={{ __html: recipe.summary }} />
-          </div>
+          <div
+            className="prose prose-lg max-w-none text-gray-800 leading-relaxed prose-headings:text-gray-900 prose-p:mt-0"
+            dangerouslySetInnerHTML={{ __html: recipe.summary }}
+          />
         </div>
       </div>
     </div>
