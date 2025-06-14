@@ -1,5 +1,11 @@
 import Image from 'next/image';
 
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
 async function getRecipe(id: string) {
   const params = new URLSearchParams({
     apiKey: process.env.SPOONACULAR_API_KEY!,
@@ -7,19 +13,18 @@ async function getRecipe(id: string) {
   });
 
   const res = await fetch(
-    `https://api.spoonacular.com/recipes/${id}/information?${params}`,
+    `https://api.spoonacular.com/recipes/${id}/information?${params.toString()}`,
+    { cache: 'no-store' },
   );
 
-  if (!res.ok) throw new Error('Failed to fetch recipe');
+  if (!res.ok) {
+    throw new Error('Failed to fetch recipe');
+  }
 
   return res.json();
 }
 
-export default async function RecipePage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function RecipePage({ params }: PageProps) {
   const recipe = await getRecipe(params.id);
 
   return (
